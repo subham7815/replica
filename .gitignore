@@ -1,0 +1,19 @@
+node_modules/
+dist/
+.env
+.env.local
+*.log
+.DS_Store
+
+# api
+apps/api/.pgdata/
+apps/api/src/generated/
+
+# web
+apps/web/dist/
+
+# mobile
+apps/mobile/.expo/
+apps/mobile/ios/
+apps/mobile/android/
+apps/mobile/web-build/

@@ -1,0 +1,128 @@
+@import 'tailwindcss';
+
+/* Brand tokens mirror packages/shared/src/theme.ts (taken from dexai.app) */
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --color-brand: #c7102c;
+  --color-brand-dark: #a10d24;
+  --color-brand-deep: #7f0a1d;
+  --color-brand-soft: #fdeef0;
+  --color-brand-on-dark: #ff8a9c;
+
+  --color-navy: #23252e;
+  --color-navy-deep: #17181e;
+  --color-navy-ink: #121317;
+  --color-navy-soft: #f2f2f4;
+  --color-on-dark: #b8bac4;
+
+  --color-ink: #111218;
+  --color-text: #4a4d57;
+  --color-muted: #5a5d68;
+  --color-faint: #9a9ca6;
+
+  --color-line: #e6e6e9;
+  --color-line-soft: #ececef;
+  --color-line-strong: #d3d3d9;
+  --color-surface: #f7f7f8;
+
+  --color-success: #15803d;
+  --color-success-soft: #e8f6ec;
+  --color-warning: #9a4a00;
+  --color-warning-soft: #fef3e2;
+
+  --shadow-dx-sm: 0 1px 2px #1112180f;
+  --shadow-dx: 0 24px 48px -24px #11121840;
+  --shadow-dx-lg: 0 40px 80px -32px #11121873;
+
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  --animate-progress: progress 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-drift: drift 18s ease-in-out infinite alternate;
+  --animate-dash: dash 1s linear infinite;
+  --animate-fade-up: fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-reveal: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-pop-in: pop-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+
+  @keyframes pop-in {
+    0% { opacity: 0; transform: translateY(6px) scale(0.92); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    to { background-position: -200% 0; }
+  }
+  @keyframes progress {
+    0% { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  @keyframes marquee {
+    0% { transform: translate(0); }
+    to { transform: translate(-50%); }
+  }
+  @keyframes drift {
+    0% { transform: translate(0) scale(1); }
+    to { transform: translate(-48px, 36px) scale(1.12); }
+  }
+  @keyframes dash {
+    to { stroke-dashoffset: -24px; }
+  }
+  @keyframes fade-up {
+    0% { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-surface text-text font-sans antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply text-ink;
+  }
+}
+
+@utility skeleton {
+  background: linear-gradient(90deg, var(--color-line-soft) 25%, var(--color-white) 50%, var(--color-line-soft) 75%);
+  background-size: 200% 100%;
+  @apply animate-shimmer rounded-md;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition
+    focus:outline-none focus-visible:ring-4 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+@utility btn-primary {
+  @apply btn bg-brand text-white shadow-dx-sm hover:bg-brand-dark focus-visible:ring-brand/30;
+}
+
+@utility btn-secondary {
+  @apply btn border border-line bg-white text-ink hover:border-line-strong focus-visible:ring-ink/15;
+}
+
+@utility display {
+  @apply font-extrabold tracking-tight text-ink;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+
+@utility section-y {
+  @apply scroll-mt-20 py-20 sm:py-28;
+}
+
+@utility card {
+  @apply rounded-2xl border border-line bg-white shadow-dx-sm;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

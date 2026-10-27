@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Roles a person can hold inside an organisation. Platform super-admin is a flag on User, not a membership role.
+enum OrgRole {
+  ORG_ADMIN
+  COORDINATOR
+  VOLUNTEER
+  CHECKIN_OPERATOR
+  AUDITOR
+}
+
+enum MemberStatus {
+  ACTIVE
+  INVITED
+  INACTIVE
+  SUSPENDED
+}
+
+model Organization {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  contactEmail String?
+  phone        String?
+  website      String?
+  description  String?
+  timezone     String   @default("Europe/London")
+  brandColor   String   @default("#c7102c")
+  logoUrl      String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  memberships Membership[]
+  locations   Location[]
+  departments Department[]
+}
+
+// Global identity: one login per person, shared across every organisation they belong to.
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  name            String
+  passwordHash    String?
+  isPlatformAdmin Boolean   @default(false)
+  disabled        Boolean   @default(false)
+  lastLoginAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  memberships Membership[]
+  loginCodes  LoginCode[]
+}
+
+// Per-organisation profile. Contact details live here so one organisation's edits never leak to another.
+model Membership {
+  id             String       @id @default(cuid())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  role           OrgRole
+  status         MemberStatus @default(ACTIVE)
+  phone          String?
+  notes          String?
+  skills         String[]     @default([])
+  availability   Json?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  departments Department[]
+
+  @@unique([userId, organizationId])
+  @@index([organizationId, role])
+}
+
+model Location {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name           String
+  address        String?
+  notes          String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([organizationId, name])
+}
+
+model Department {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name           String
+  description    String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  memberships Membership[]
+
+  @@unique([organizationId, name])
+}
+
+model LoginCode {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  codeHash  String
+  attempts  Int       @default(0)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}

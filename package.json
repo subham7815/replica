@@ -1,0 +1,13 @@
+{
+  "name": "newreplica",
+  "private": true,
+  "packageManager": "pnpm@12.15.0",
+  "scripts": {
+    "dev:api": "pnpm --filter @newreplica/api dev",
+    "dev:web": "pnpm --filter @newreplica/web dev",
+    "dev:mobile": "pnpm --filter @newreplica/mobile start",
+    "db:start": "pnpm --filter @newreplica/api db:start",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test"
+  }
+}
