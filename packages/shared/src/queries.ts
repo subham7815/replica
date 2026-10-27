@@ -1,6 +1,7 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useAuth } from './auth';
+import type { ApplicationListQuery, ApplyInput, DiscoverQuery, OpportunityInput, ReviewInput } from './recruitment';
 import type {
   DepartmentInput,
   InviteStaffInput,
@@ -25,6 +26,14 @@ export const queryKeys = {
   volunteers: (org: string) => [org, 'volunteers'] as const,
   volunteerList: (org: string, q: VolunteerListQuery) => [org, 'volunteers', 'list', q] as const,
   volunteer: (org: string, id: string) => [org, 'volunteers', 'detail', id] as const,
+  opportunities: (org: string) => [org, 'opportunities'] as const,
+  opportunity: (org: string, id: string) => [org, 'opportunities', id] as const,
+  applications: (org: string) => [org, 'applications'] as const,
+  applicationList: (org: string, q: ApplicationListQuery) => [org, 'applications', 'list', q] as const,
+  application: (org: string, id: string) => [org, 'applications', 'detail', id] as const,
+  discover: (q: DiscoverQuery) => ['public', 'discover', q] as const,
+  publicOpportunity: (id: string) => ['public', 'opportunity', id] as const,
+  publicOrganization: (slug: string) => ['public', 'organization', slug] as const,
 };
 
 export function useDebouncedValue<T>(value: T, delayMs = 300) {
@@ -218,6 +227,101 @@ export function useImportVolunteers() {
         qc.invalidateQueries({ queryKey: queryKeys.volunteers(org) });
         qc.invalidateQueries({ queryKey: queryKeys.departments(org) });
       }
+    },
+  });
+}
+
+// ---------- public recruitment (no sign-in) ----------
+
+export function useDiscover(query: DiscoverQuery) {
+  const { api } = useAuth();
+  return useQuery({ queryKey: queryKeys.discover(query), queryFn: () => api.discover(query), placeholderData: keepPreviousData });
+}
+
+export function usePublicOpportunity(id: string | undefined) {
+  const { api } = useAuth();
+  return useQuery({ queryKey: queryKeys.publicOpportunity(id ?? ''), queryFn: () => api.publicOpportunity(id!), enabled: !!id, retry: false });
+}
+
+export function usePublicOrganization(slug: string | undefined) {
+  const { api } = useAuth();
+  return useQuery({ queryKey: queryKeys.publicOrganization(slug ?? ''), queryFn: () => api.publicOrganization(slug!), enabled: !!slug, retry: false });
+}
+
+export function useApply() {
+  const { api } = useAuth();
+  return useMutation({ mutationFn: ({ opportunityId, input }: { opportunityId: string; input: ApplyInput }) => api.apply(opportunityId, input) });
+}
+
+// ---------- opportunities (coordinators) ----------
+
+export function useOpportunities() {
+  const { api } = useAuth();
+  return useQuery({ queryKey: queryKeys.opportunities(useOrgKey()), queryFn: api.listOpportunities });
+}
+
+export function useOpportunity(id: string | undefined) {
+  const { api } = useAuth();
+  return useQuery({ queryKey: queryKeys.opportunity(useOrgKey(), id ?? ''), queryFn: () => api.getOpportunity(id!), enabled: !!id });
+}
+
+export function useSaveOpportunity() {
+  const { api } = useAuth();
+  const qc = useQueryClient();
+  const org = useOrgKey();
+  return useMutation({
+    mutationFn: ({ id, input }: { id?: string; input: OpportunityInput }) => (id ? api.updateOpportunity(id, input) : api.createOpportunity(input)),
+    onSuccess: (data) => {
+      qc.setQueryData(queryKeys.opportunity(org, data.id), data);
+      qc.invalidateQueries({ queryKey: queryKeys.opportunities(org), exact: true });
+      qc.invalidateQueries({ queryKey: ['public'] });
+    },
+  });
+}
+
+export function useDeleteOpportunity() {
+  const { api } = useAuth();
+  const qc = useQueryClient();
+  const org = useOrgKey();
+  return useMutation({
+    mutationFn: (id: string) => api.deleteOpportunity(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: queryKeys.opportunities(org) });
+      qc.invalidateQueries({ queryKey: queryKeys.applications(org) });
+      qc.invalidateQueries({ queryKey: ['public'] });
+    },
+  });
+}
+
+// ---------- applications (coordinators) ----------
+
+export function useApplications(query: ApplicationListQuery) {
+  const { api } = useAuth();
+  return useQuery({
+    queryKey: queryKeys.applicationList(useOrgKey(), query),
+    queryFn: () => api.listApplications(query),
+    placeholderData: keepPreviousData,
+  });
+}
+
+export function useApplication(id: string | undefined) {
+  const { api } = useAuth();
+  return useQuery({ queryKey: queryKeys.application(useOrgKey(), id ?? ''), queryFn: () => api.getApplication(id!), enabled: !!id });
+}
+
+export function useReviewApplication() {
+  const { api } = useAuth();
+  const qc = useQueryClient();
+  const org = useOrgKey();
+  return useMutation({
+    mutationFn: ({ id, decision, input }: { id: string; decision: 'approve' | 'reject'; input?: ReviewInput }) =>
+      decision === 'approve' ? api.approveApplication(id, input) : api.rejectApplication(id, input),
+    onSuccess: (data) => {
+      qc.setQueryData(queryKeys.application(org, data.id), data);
+      qc.invalidateQueries({ queryKey: queryKeys.applications(org) });
+      qc.invalidateQueries({ queryKey: queryKeys.opportunities(org) });
+      qc.invalidateQueries({ queryKey: queryKeys.volunteers(org) });
+      qc.invalidateQueries({ queryKey: queryKeys.departments(org) });
     },
   });
 }

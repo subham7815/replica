@@ -1,6 +1,7 @@
 import type { IconName } from '../../components/icons';
 
 export const NAV_LINKS = [
+  { to: '/discover', label: 'Find opportunities' },
   { to: '/volunteers', label: 'For volunteers' },
   { to: '/how-it-works', label: 'How it works' },
   { to: '/features', label: 'Features' },
@@ -15,6 +16,7 @@ export const PAGE_TITLES: Record<string, string> = {
   '/features': 'Features · Replica',
   '/pricing': 'Pricing · Replica',
   '/faq': 'FAQ · Replica',
+  '/discover': 'Find volunteer opportunities · Replica',
 };
 
 export const HERO = {

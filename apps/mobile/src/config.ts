@@ -11,6 +11,10 @@ function resolveApiUrl() {
 
 export const API_URL = resolveApiUrl();
 
+// Public web pages (shareable opportunity links) are served by the web app on the same machine in development.
+export const WEB_URL =
+  process.env.EXPO_PUBLIC_WEB_URL ?? `http://${Constants.expoConfig?.hostUri?.split(':')[0] ?? 'localhost'}:5173`;
+
 export const storage: KeyValueStorage = {
   get: (key) => SecureStore.getItemAsync(key),
   set: (key, value) => SecureStore.setItemAsync(key, value),

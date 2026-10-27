@@ -6,6 +6,8 @@ import { env } from './env';
 import { errorHandler } from './lib/http';
 import { authRouter } from './routes/auth';
 import { organizationRouter } from './routes/organization';
+import { publicRouter } from './routes/public';
+import { applicationsRouter, opportunitiesRouter } from './routes/recruitment';
 import { teamRouter } from './routes/team';
 import { volunteersRouter } from './routes/volunteers';
 
@@ -29,6 +31,9 @@ export function createApp() {
   app.use('/auth', authRouter);
   app.use('/team', teamRouter);
   app.use('/volunteers', volunteersRouter);
+  app.use('/public', publicRouter);
+  app.use('/opportunities', opportunitiesRouter);
+  app.use('/applications', applicationsRouter);
   app.use(organizationRouter);
 
   app.use((_req, res) => {

@@ -6,7 +6,7 @@ import { signAccessToken } from '../src/lib/tokens';
 
 export async function resetDb() {
   await prisma.$executeRawUnsafe(
-    'TRUNCATE TABLE "LoginCode", "_DepartmentToMembership", "Membership", "Department", "Location", "User", "Organization" CASCADE',
+    'TRUNCATE TABLE "Application", "Opportunity", "LoginCode", "_DepartmentToMembership", "Membership", "Department", "Location", "User", "Organization" CASCADE',
   );
 }
 

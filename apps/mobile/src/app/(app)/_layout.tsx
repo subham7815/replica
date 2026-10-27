@@ -18,6 +18,10 @@ export default function AppLayout() {
       <Stack.Screen name="volunteers/new" options={{ title: 'Add volunteer' }} />
       <Stack.Screen name="volunteers/[id]" options={{ title: '' }} />
       <Stack.Screen name="volunteers/import" options={{ title: 'Import volunteers', presentation: 'modal' }} />
+      <Stack.Screen name="recruitment/index" options={{ title: 'Recruitment' }} />
+      <Stack.Screen name="recruitment/application/[id]" options={{ title: '' }} />
+      <Stack.Screen name="recruitment/opportunities" options={{ title: 'Opportunities' }} />
+      <Stack.Screen name="recruitment/opportunity/[id]" options={{ title: '' }} />
       <Stack.Screen name="settings/index" options={{ title: 'Organisation' }} />
       <Stack.Screen name="settings/profile" options={{ title: 'Profile & branding' }} />
       <Stack.Screen name="settings/locations" options={{ title: 'Locations' }} />

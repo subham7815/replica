@@ -33,6 +33,7 @@ export default function LandingScreen() {
       <FadeUp delay={200}>
         <View style={{ gap: spacing.md, marginTop: spacing.md }}>
           <Button title="Sign in" onPress={() => router.push('/login')} />
+          <Button title="Find volunteer opportunities" variant="secondary" onPress={() => router.push('/discover')} />
           <Button title="Create your organisation" variant="secondary" onPress={() => router.push('/register')} />
         </View>
       </FadeUp>

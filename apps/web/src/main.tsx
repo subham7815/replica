@@ -30,6 +30,13 @@ const LocationsTab = lazy(() => import('./pages/settings/PlacesTabs').then((m) =
 const DepartmentsTab = lazy(() => import('./pages/settings/PlacesTabs').then((m) => ({ default: m.DepartmentsTab })));
 const TeamTab = lazy(() => import('./pages/settings/TeamTab').then((m) => ({ default: m.TeamTab })));
 const RolesTab = lazy(() => import('./pages/settings/RolesTab').then((m) => ({ default: m.RolesTab })));
+const RecruitmentLayout = lazy(() => import('./pages/recruitment/RecruitmentLayout').then((m) => ({ default: m.RecruitmentLayout })));
+const ApplicationsTab = lazy(() => import('./pages/recruitment/ApplicationsTab').then((m) => ({ default: m.ApplicationsTab })));
+const OpportunitiesTab = lazy(() => import('./pages/recruitment/OpportunitiesTab').then((m) => ({ default: m.OpportunitiesTab })));
+const OpportunityFormPage = lazy(() => import('./pages/recruitment/OpportunityFormPage').then((m) => ({ default: m.OpportunityFormPage })));
+const DiscoverPage = lazy(() => import('./pages/public/DiscoverPage').then((m) => ({ default: m.DiscoverPage })));
+const OrganizationPage = lazy(() => import('./pages/public/OrganizationPage').then((m) => ({ default: m.OrganizationPage })));
+const OpportunityPage = lazy(() => import('./pages/public/OpportunityPage').then((m) => ({ default: m.OpportunityPage })));
 
 function PageSpinner() {
   return (
@@ -55,6 +62,9 @@ createRoot(document.getElementById('root')!).render(
               <Route path="/features" element={<FeaturesPage />} />
               <Route path="/pricing" element={<PricingPage />} />
               <Route path="/faq" element={<FaqPage />} />
+              <Route path="/discover" element={<DiscoverPage />} />
+              <Route path="/o/:slug" element={<OrganizationPage />} />
+              <Route path="/opportunities/:id" element={<OpportunityPage />} />
             </Route>
             <Route element={<RequireSignedOut />}>
               <Route path="/login" element={<LoginPage />} />
@@ -68,6 +78,13 @@ createRoot(document.getElementById('root')!).render(
                   <Route path="volunteers" element={<VolunteerDatabasePage />} />
                   <Route path="volunteers/new" element={<VolunteerFormPage />} />
                   <Route path="volunteers/:id" element={<VolunteerFormPage />} />
+                  <Route path="recruitment" element={<RecruitmentLayout />}>
+                    <Route index element={<Navigate to="applications" replace />} />
+                    <Route path="applications" element={<ApplicationsTab />} />
+                    <Route path="opportunities" element={<OpportunitiesTab />} />
+                  </Route>
+                  <Route path="recruitment/opportunities/new" element={<OpportunityFormPage />} />
+                  <Route path="recruitment/opportunities/:id" element={<OpportunityFormPage />} />
                 </Route>
                 <Route element={<RequirePermission permission="org:manage" />}>
                   <Route path="settings" element={<SettingsLayout />}>

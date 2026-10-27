@@ -42,6 +42,9 @@ function RootStack() {
         <Stack.Screen name="(app)" />
       </Stack.Protected>
       <Stack.Screen name="verify" />
+      <Stack.Screen name="discover/index" />
+      <Stack.Screen name="opportunity/[id]" />
+      <Stack.Screen name="o/[slug]" />
     </Stack>
   );
 }

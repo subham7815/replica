@@ -54,7 +54,9 @@ export default function HomeScreen() {
                   ? router.push('/volunteers')
                   : item.key === 'settings'
                     ? router.push('/settings')
-                    : router.push({ pathname: '/module/[key]', params: { key: item.key } })
+                    : item.key === 'recruitment'
+                      ? router.push('/recruitment')
+                      : router.push({ pathname: '/module/[key]', params: { key: item.key } })
               }
               style={({ pressed }) => [pressed && { transform: [{ translateY: 1 }], opacity: 0.9 }]}
             >
@@ -72,6 +74,16 @@ export default function HomeScreen() {
             </Pressable>
           </FadeUp>
         ))}
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => router.push('/discover')}
+          style={({ pressed }) => [pressed && { transform: [{ translateY: 1 }], opacity: 0.9 }]}
+        >
+          <Card style={{ padding: spacing.lg }}>
+            <Text style={styles.cardTitle}>Find opportunities</Text>
+            <Text style={[text.body, { fontSize: 14, marginTop: 4 }]}>Browse volunteer roles from other organisations on Replica</Text>
+          </Card>
+        </Pressable>
       </View>
 
       <Card style={{ padding: spacing.lg, gap: 4 }}>

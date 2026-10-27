@@ -1,5 +1,19 @@
 import { z } from 'zod';
 import {
+  applicationListSchema,
+  applicationSchema,
+  applyResponseSchema,
+  opportunitySchema,
+  publicOpportunityListSchema,
+  publicOpportunitySchema,
+  publicOrganizationPageSchema,
+  type ApplicationListQuery,
+  type ApplyInput,
+  type DiscoverQuery,
+  type OpportunityInput,
+  type ReviewInput,
+} from './recruitment';
+import {
   authResponseSchema,
   departmentSchema,
   healthSchema,
@@ -128,6 +142,23 @@ export function createApiClient({ baseUrl, getToken, getOrganizationId, onUnauth
     importVolunteers: (input: ImportVolunteersInput) => post('/volunteers/import', importResultSchema, input),
     exportVolunteersCsv: async (query: Omit<VolunteerListQuery, 'page' | 'pageSize'> = {}) =>
       (await send(`/volunteers/export${toQuery({ ...query })}`)).text(),
+
+    discover: (query: DiscoverQuery = {}) => request(`/public/opportunities${toQuery({ ...query })}`, publicOpportunityListSchema),
+    publicOpportunity: (id: string) => request(`/public/opportunities/${encodeURIComponent(id)}`, publicOpportunitySchema),
+    publicOrganization: (slug: string) => request(`/public/organizations/${encodeURIComponent(slug)}`, publicOrganizationPageSchema),
+    apply: (opportunityId: string, input: ApplyInput) =>
+      post(`/public/opportunities/${encodeURIComponent(opportunityId)}/apply`, applyResponseSchema, input),
+
+    listOpportunities: () => request('/opportunities', z.array(opportunitySchema)),
+    getOpportunity: (id: string) => request(`/opportunities/${id}`, opportunitySchema),
+    createOpportunity: (input: OpportunityInput) => post('/opportunities', opportunitySchema, input),
+    updateOpportunity: (id: string, input: Partial<OpportunityInput>) => patch(`/opportunities/${id}`, opportunitySchema, input),
+    deleteOpportunity: (id: string) => del(`/opportunities/${id}`, ok),
+
+    listApplications: (query: ApplicationListQuery = {}) => request(`/applications${toQuery({ ...query })}`, applicationListSchema),
+    getApplication: (id: string) => request(`/applications/${id}`, applicationSchema),
+    approveApplication: (id: string, input: ReviewInput = {}) => post(`/applications/${id}/approve`, applicationSchema, input),
+    rejectApplication: (id: string, input: ReviewInput = {}) => post(`/applications/${id}/reject`, applicationSchema, input),
   };
 }
 

@@ -37,9 +37,81 @@ model Organization {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  memberships Membership[]
-  locations   Location[]
-  departments Department[]
+  memberships   Membership[]
+  locations     Location[]
+  departments   Department[]
+  opportunities Opportunity[]
+  applications  Application[]
+}
+
+enum OpportunityStatus {
+  DRAFT
+  PUBLISHED
+  CLOSED
+}
+
+enum SignupMode {
+  OPEN
+  APPROVAL
+}
+
+enum Visibility {
+  PUBLIC
+  UNLISTED
+}
+
+enum ApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+// A volunteer role an organisation recruits for. Questions is a JSON array of form-field definitions.
+model Opportunity {
+  id             String            @id @default(cuid())
+  organizationId String
+  organization   Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  title          String
+  summary        String
+  description    String?
+  commitment     String?
+  locationId     String?
+  location       Location?         @relation(fields: [locationId], references: [id], onDelete: SetNull)
+  departmentId   String?
+  department     Department?       @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+  status         OpportunityStatus @default(DRAFT)
+  signupMode     SignupMode        @default(APPROVAL)
+  visibility     Visibility        @default(PUBLIC)
+  questions      Json              @default("[]")
+  publishedAt    DateTime?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  applications Application[]
+
+  @@index([organizationId, status])
+  @@index([status, visibility])
+}
+
+model Application {
+  id             String            @id @default(cuid())
+  opportunityId  String
+  opportunity    Opportunity       @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  organizationId String
+  organization   Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  phone          String?
+  answers        Json              @default("{}")
+  status         ApplicationStatus @default(PENDING)
+  reviewNote     String?
+  reviewedById   String?
+  reviewedAt     DateTime?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  @@unique([opportunityId, userId])
+  @@index([organizationId, status])
 }
 
 // Global identity: one login per person, shared across every organisation they belong to.
@@ -54,8 +126,9 @@ model User {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
-  memberships Membership[]
-  loginCodes  LoginCode[]
+  memberships  Membership[]
+  loginCodes   LoginCode[]
+  applications Application[]
 }
 
 // Per-organisation profile. Contact details live here so one organisation's edits never leak to another.
@@ -90,6 +163,8 @@ model Location {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 
+  opportunities Opportunity[]
+
   @@unique([organizationId, name])
 }
 
@@ -102,7 +177,8 @@ model Department {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 
-  memberships Membership[]
+  memberships   Membership[]
+  opportunities Opportunity[]
 
   @@unique([organizationId, name])
 }
