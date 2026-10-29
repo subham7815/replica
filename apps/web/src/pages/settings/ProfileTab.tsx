@@ -123,7 +123,7 @@ export function ProfileTab() {
                 className="grid h-10 w-10 place-items-center rounded-lg font-bold text-white"
                 style={{ backgroundColor: validColor ? form.brandColor : '#c7102c' }}
               >
-                {form.name.trim().charAt(0).toUpperCase() || 'R'}
+                {form.name.trim().charAt(0).toUpperCase() || 'D'}
               </span>
             )}
             <span className="font-semibold text-ink">{form.name || 'Your organisation'}</span>

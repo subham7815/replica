@@ -28,7 +28,7 @@ export function HowItWorksPage() {
               id="walkthrough-title"
               eyebrow="The full walkthrough"
               title="What happens from day one"
-              sub="Here’s everything Replica takes off your plate, from first set-up to the end-of-month report."
+              sub="Here’s everything DexServe takes off your plate, from first set-up to the end-of-month report."
             />
             <Timeline steps={WALKTHROUGH} className="mt-10" />
           </div>

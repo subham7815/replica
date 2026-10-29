@@ -30,7 +30,7 @@ export function Header() {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link to="/" aria-label="Replica home">
+        <Link to="/" aria-label="DexServe home">
           <Logo />
         </Link>
 

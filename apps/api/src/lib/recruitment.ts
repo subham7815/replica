@@ -172,7 +172,7 @@ export const recruitmentEmails = {
   joined: (to: User, org: Organization, opp: Opportunity) =>
     sendMail({
       to: to.email,
-      subject: `You've joined ${org.name} on Replica`,
+      subject: `You've joined ${org.name} on DexServe`,
       text: `Hi ${to.name},\n\nYou're now signed up for "${opp.title}" with ${org.name}.\n\n${signInLine()}\n`,
     }),
   duplicate: (to: User, org: Organization, opp: Opportunity) =>

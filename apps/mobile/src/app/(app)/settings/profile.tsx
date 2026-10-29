@@ -111,7 +111,7 @@ export default function ProfileScreen() {
             <Image source={{ uri: form.logoUrl }} style={{ width: 40, height: 40, borderRadius: 8 }} />
           ) : (
             <View style={{ width: 40, height: 40, borderRadius: 8, backgroundColor: color, alignItems: 'center', justifyContent: 'center' }}>
-              <Text style={{ color: colors.white, fontWeight: '700' }}>{form.name.trim().charAt(0).toUpperCase() || 'R'}</Text>
+              <Text style={{ color: colors.white, fontWeight: '700' }}>{form.name.trim().charAt(0).toUpperCase() || 'D'}</Text>
             </View>
           )}
           <Text style={{ flex: 1, color: colors.ink, fontWeight: '600' }} numberOfLines={1}>

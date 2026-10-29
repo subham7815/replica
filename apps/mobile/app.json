@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Replica",
-    "slug": "replica",
-    "scheme": "replica",
+    "name": "DexServe",
+    "slug": "dexserve",
+    "scheme": "dexserve",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

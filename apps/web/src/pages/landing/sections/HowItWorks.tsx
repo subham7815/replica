@@ -12,7 +12,7 @@ export function HowItWorks({ learnMore = true }: { learnMore?: boolean }) {
     <section aria-labelledby="how-title" className="section-y">
       <div className="mx-auto grid max-w-6xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2">
         <div>
-          <SectionHeading align="left" id="how-title" eyebrow="How it works" title="Replica fixes this in 3 steps." />
+          <SectionHeading align="left" id="how-title" eyebrow="How it works" title="DexServe fixes this in 3 steps." />
           <Timeline steps={STEPS} className="mt-10" />
           <Reveal className="mt-10 flex flex-wrap items-center gap-6">
             <Link to="/register" className="btn-primary px-6 py-3.5 text-base">

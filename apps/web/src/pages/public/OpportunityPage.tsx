@@ -28,7 +28,7 @@ export function OpportunityPage() {
   }, [user]);
 
   useEffect(() => {
-    if (opp.data) document.title = `${opp.data.title} · ${opp.data.organization.name} · Replica`;
+    if (opp.data) document.title = `${opp.data.title} · ${opp.data.organization.name} · DexServe`;
   }, [opp.data]);
 
   if (opp.isPending) {

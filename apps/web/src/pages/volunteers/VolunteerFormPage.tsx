@@ -161,7 +161,7 @@ export function VolunteerFormPage() {
           </div>
           {identityLocked && (
             <p className="rounded-lg bg-navy-soft px-3.5 py-2.5 text-sm">
-              {volunteer.data!.name} manages their own name and email now that they have a Replica account.
+              {volunteer.data!.name} manages their own name and email now that they have a DexServe account.
             </p>
           )}
         </section>

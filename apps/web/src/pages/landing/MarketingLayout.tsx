@@ -9,7 +9,7 @@ export function MarketingLayout() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-    document.title = PAGE_TITLES[pathname] ?? 'Replica';
+    document.title = PAGE_TITLES[pathname] ?? 'DexServe';
   }, [pathname]);
 
   return (

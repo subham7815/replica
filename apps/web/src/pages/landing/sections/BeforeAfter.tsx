@@ -26,7 +26,7 @@ export function BeforeAfter() {
           </Reveal>
           <Reveal delay={120}>
             <div className="h-full rounded-2xl border border-success/25 bg-success-soft/50 p-7 shadow-dx-sm">
-              <p className="text-sm font-semibold tracking-widest text-success uppercase">With Replica</p>
+              <p className="text-sm font-semibold tracking-widest text-success uppercase">With DexServe</p>
               <ul className="mt-5 space-y-4">
                 {AFTER.map((a) => (
                   <li key={a} className="flex items-start gap-3 font-medium text-ink">

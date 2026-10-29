@@ -31,7 +31,7 @@ export function Footer() {
     <footer className="border-t border-line bg-white">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-[1.6fr_repeat(3,1fr)]">
         <div>
-          <Link to="/" aria-label="Replica home">
+          <Link to="/" aria-label="DexServe home">
             <Logo />
           </Link>
           <p className="mt-4 max-w-xs text-sm leading-relaxed">
@@ -57,7 +57,7 @@ export function Footer() {
         ))}
       </div>
       <div className="border-t border-line-soft">
-        <p className="mx-auto max-w-6xl px-4 py-6 text-xs text-faint sm:px-6">© {new Date().getFullYear()} Replica. All rights reserved.</p>
+        <p className="mx-auto max-w-6xl px-4 py-6 text-xs text-faint sm:px-6">© {new Date().getFullYear()} DexServe. All rights reserved.</p>
       </div>
     </footer>
   );

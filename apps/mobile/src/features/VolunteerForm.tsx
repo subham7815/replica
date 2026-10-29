@@ -136,7 +136,7 @@ export function VolunteerForm({ id }: { id?: string }) {
           autoCapitalize="none"
           error={errors?.email}
         />
-        {locked && <Text style={text.muted}>{volunteer.data!.name} manages their own name and email now that they have a Replica account.</Text>}
+        {locked && <Text style={text.muted}>{volunteer.data!.name} manages their own name and email now that they have a DexServe account.</Text>}
         <Field label="Phone" value={form.phone} onChangeText={set('phone')} keyboardType="phone-pad" error={errors?.phone} />
         <ChipGroup
           label="Status"

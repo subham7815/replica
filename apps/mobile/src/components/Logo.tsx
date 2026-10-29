@@ -5,9 +5,9 @@ export function Logo() {
   return (
     <View style={styles.row}>
       <View style={styles.mark}>
-        <Text style={styles.markText}>R</Text>
+        <Text style={styles.markText}>D</Text>
       </View>
-      <Text style={styles.name}>Replica</Text>
+      <Text style={styles.name}>DexServe</Text>
     </View>
   );
 }

@@ -123,7 +123,7 @@ describe('team', () => {
     expect((await request(app).get('/team').set(await authHeaders(coord.id))).status).toBe(403);
   });
 
-  it('adds an existing Replica user from another organisation without touching their other membership', async () => {
+  it('adds an existing DexServe user from another organisation without touching their other membership', async () => {
     const elsewhere = await createUser('VOLUNTEER', { email: 'multi@example.com', name: 'Real Name' });
     const admin = await createUser('ORG_ADMIN');
     const res = await request(app)

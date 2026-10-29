@@ -80,7 +80,7 @@ export function ChatToRotaMockup() {
       >
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-[11px] font-semibold tracking-widest text-brand uppercase">Replica rota</p>
+            <p className="text-[11px] font-semibold tracking-widest text-brand uppercase">DexServe rota</p>
             <p className="mt-1 font-semibold text-ink">Saturday · Food sorting</p>
             <p className="text-xs text-muted">09:00 – 12:00 · Main hall</p>
           </div>

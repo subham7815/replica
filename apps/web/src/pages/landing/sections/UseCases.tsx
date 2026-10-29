@@ -11,7 +11,7 @@ export function UseCases() {
           id="uses-title"
           eyebrow="Who it’s for"
           title="Built for teams that run on volunteers"
-          sub="If your group has a rota, Replica can run it."
+          sub="If your group has a rota, DexServe can run it."
         />
       </div>
 

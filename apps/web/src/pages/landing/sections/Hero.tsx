@@ -49,7 +49,7 @@ export function Hero() {
         <div className="animate-fade-up [animation-delay:300ms]">
           <ChatToRotaMockup />
           <p className="sr-only">
-            Illustration: a group chat full of unanswered requests for cover, replaced by a Replica rota that fills itself.
+            Illustration: a group chat full of unanswered requests for cover, replaced by a DexServe rota that fills itself.
           </p>
         </div>
       </div>

@@ -1,4 +1,4 @@
-# Replica
+# DexServe
 
 A multi-organisation volunteer scheduling platform with a web app, a mobile app and a REST API, all in one pnpm monorepo.
 

@@ -7,7 +7,7 @@ import { ActivityIndicator, Text, View } from 'react-native';
 import { Screen } from '@/components/Screen';
 import { Button, FormError, text } from '@/components/ui';
 
-// Handles replica://verify?token=… sign-in links.
+// Handles dexserve://verify?token=… sign-in links.
 export default function VerifyScreen() {
   const { token } = useLocalSearchParams<{ token?: string }>();
   const { api, completeSignIn } = useAuth();

@@ -81,7 +81,7 @@ export default function HomeScreen() {
         >
           <Card style={{ padding: spacing.lg }}>
             <Text style={styles.cardTitle}>Find opportunities</Text>
-            <Text style={[text.body, { fontSize: 14, marginTop: 4 }]}>Browse volunteer roles from other organisations on Replica</Text>
+            <Text style={[text.body, { fontSize: 14, marginTop: 4 }]}>Browse volunteer roles from other organisations on DexServe</Text>
           </Card>
         </Pressable>
       </View>

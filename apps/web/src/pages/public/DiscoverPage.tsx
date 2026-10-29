@@ -22,7 +22,7 @@ export function DiscoverPage() {
           <p className="animate-fade-up text-xs font-semibold tracking-widest text-brand uppercase">Find opportunities</p>
           <h1 className="display mt-4 animate-fade-up text-4xl [animation-delay:80ms] sm:text-6xl">Volunteer roles near you</h1>
           <p className="mx-auto mt-5 max-w-2xl animate-fade-up text-lg [animation-delay:160ms]">
-            Browse roles from community groups on Replica and apply in a couple of minutes. No account needed.
+            Browse roles from community groups on DexServe and apply in a couple of minutes. No account needed.
           </p>
           <label className="relative mx-auto mt-8 block max-w-xl animate-fade-up [animation-delay:240ms]">
             <span className="sr-only">Search opportunities</span>

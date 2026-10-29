@@ -10,19 +10,19 @@ export const NAV_LINKS = [
 ] as const;
 
 export const PAGE_TITLES: Record<string, string> = {
-  '/': 'Replica: volunteer rotas, reminders and check-ins',
-  '/volunteers': 'For volunteers · Replica',
-  '/how-it-works': 'How it works · Replica',
-  '/features': 'Features · Replica',
-  '/pricing': 'Pricing · Replica',
-  '/faq': 'FAQ · Replica',
-  '/discover': 'Find volunteer opportunities · Replica',
+  '/': 'DexServe: volunteer rotas, reminders and check-ins',
+  '/volunteers': 'For volunteers · DexServe',
+  '/how-it-works': 'How it works · DexServe',
+  '/features': 'Features · DexServe',
+  '/pricing': 'Pricing · DexServe',
+  '/faq': 'FAQ · DexServe',
+  '/discover': 'Find volunteer opportunities · DexServe',
 };
 
 export const HERO = {
   title: 'Stop chasing volunteers in group chats',
   lines: [
-    'Replica sends the reminders.',
+    'DexServe sends the reminders.',
     'Fills the gap from the waitlist when someone drops out.',
     'Logs hours with a QR scan at the door.',
     'You just show up.',
@@ -153,8 +153,8 @@ export const FAQS: FaqItem[] = [
   {
     group: 'general',
     pages: ['home', 'pricing'],
-    q: 'Is Replica free?',
-    a: 'Yes. Replica is free while it’s in beta, and you don’t need a credit card to start.',
+    q: 'Is DexServe free?',
+    a: 'Yes. DexServe is free while it’s in beta, and you don’t need a credit card to start.',
   },
   {
     group: 'general',
@@ -177,11 +177,11 @@ export const FAQS: FaqItem[] = [
   {
     group: 'general',
     q: 'Does it work on phones?',
-    a: 'Yes. Replica works in any modern browser on phone, tablet or computer. Native iOS and Android apps are coming soon to the App Store and Google Play.',
+    a: 'Yes. DexServe works in any modern browser on phone, tablet or computer. Native iOS and Android apps are coming soon to the App Store and Google Play.',
   },
   {
     group: 'general',
-    q: 'What kind of groups is Replica for?',
+    q: 'What kind of groups is DexServe for?',
     a: 'Any team that runs a volunteer rota: food banks, schools and PTAs, sports clubs, faith communities, mutual aid groups, shelters and community events.',
   },
   {
@@ -194,7 +194,7 @@ export const FAQS: FaqItem[] = [
     group: 'volunteers',
     pages: ['pricing', 'volunteers'],
     q: 'Do volunteers have to pay?',
-    a: 'No. Replica is free for everyone during the beta, volunteers included.',
+    a: 'No. DexServe is free for everyone during the beta, volunteers included.',
   },
   {
     group: 'volunteers',
@@ -223,7 +223,7 @@ export const FAQS: FaqItem[] = [
   {
     group: 'coordinators',
     q: 'Can I import my existing volunteer list?',
-    a: 'Yes. Upload a CSV of names and emails and Replica invites everyone for you.',
+    a: 'Yes. Upload a CSV of names and emails and DexServe invites everyone for you.',
   },
   {
     group: 'coordinators',
@@ -261,7 +261,7 @@ export const PAGE_HEROES = {
   howItWorks: {
     eyebrow: 'How it works',
     title: 'From group-chat chaos to a rota that runs itself',
-    sub: 'Set it up once. Replica handles the reminders, the drop-outs and the hours.',
+    sub: 'Set it up once. DexServe handles the reminders, the drop-outs and the hours.',
   },
   features: {
     eyebrow: 'Features',
@@ -276,12 +276,12 @@ export const PAGE_HEROES = {
   faq: {
     eyebrow: 'FAQ',
     title: 'Questions, answered',
-    sub: 'Everything you might want to know about running your rota on Replica.',
+    sub: 'Everything you might want to know about running your rota on DexServe.',
   },
 };
 
 export const VOLUNTEER_STEPS = [
-  { title: 'Open your invite link', body: 'Your coordinator shares a link, or you find their opportunities on Replica.' },
+  { title: 'Open your invite link', body: 'Your coordinator shares a link, or you find their opportunities on DexServe.' },
   { title: 'Sign in with an email code', body: 'Enter your email and type the 6-digit code we send. No password to remember.' },
   { title: 'Pick your shifts', body: 'Choose the dates that suit you. If a shift is full, join the waitlist.' },
   { title: 'Check in at the door', body: 'Scan the QR code when you arrive and your hours are logged for you.' },

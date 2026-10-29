@@ -9,7 +9,7 @@ export function OrganizationPage() {
   const page = usePublicOrganization(slug);
 
   useEffect(() => {
-    if (page.data) document.title = `${page.data.organization.name} · Replica`;
+    if (page.data) document.title = `${page.data.organization.name} · DexServe`;
   }, [page.data]);
 
   if (page.isPending) {

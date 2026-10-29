@@ -121,7 +121,7 @@ authRouter.post('/request-code', authLimiter, async (req, res) => {
     const link = `${env.WEB_APP_URL}/auth/verify?token=${encodeURIComponent(token)}`;
     await sendMail({
       to: user.email,
-      subject: `Your Replica sign-in code: ${code}`,
+      subject: `Your DexServe sign-in code: ${code}`,
       text: `Hi ${user.name},\n\nYour sign-in code is ${code}. It expires in 15 minutes.\n\nOr sign in on the web with this link:\n${link}\n\nIf you didn't ask for this, you can ignore this email.`,
     });
     if (env.AUTH_DEV_EXPOSE_CODES) response.dev = { code, token };
