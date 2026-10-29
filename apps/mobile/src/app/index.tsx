@@ -1,7 +1,7 @@
 import { colors, spacing } from '@newreplica/shared';
 import { useAuth } from '@newreplica/shared/auth';
 import { useQuery } from '@tanstack/react-query';
-import { router } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 import { Logo } from '@/components/Logo';
 import { FadeUp, PulseDot, Skeleton } from '@/components/motion';
@@ -9,8 +9,11 @@ import { Screen } from '@/components/Screen';
 import { Button, Card, text } from '@/components/ui';
 
 export default function LandingScreen() {
-  const { api } = useAuth();
-  const health = useQuery({ queryKey: ['health'], queryFn: api.health, refetchInterval: 10_000 });
+  const { api, state } = useAuth();
+  const signedIn = state.status === 'signedIn';
+  const health = useQuery({ queryKey: ['health'], queryFn: api.health, refetchInterval: 10_000, enabled: !signedIn });
+
+  if (signedIn) return <Redirect href="/home" />;
 
   return (
     <Screen>

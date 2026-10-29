@@ -33,8 +33,9 @@ function RootStack() {
   const signedIn = state.status === 'signedIn';
   return (
     <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.surface } }}>
+      {/* "/" stays reachable in both states: it redirects signed-in users to /home, so the stack always has a fallback route. */}
+      <Stack.Screen name="index" />
       <Stack.Protected guard={!signedIn}>
-        <Stack.Screen name="index" />
         <Stack.Screen name="login" />
         <Stack.Screen name="register" />
       </Stack.Protected>
