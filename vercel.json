@@ -1,0 +1,6 @@
+{
+  "installCommand": "pnpm install --filter @newreplica/web...",
+  "buildCommand": "pnpm --filter @newreplica/web build",
+  "outputDirectory": "apps/web/dist",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
