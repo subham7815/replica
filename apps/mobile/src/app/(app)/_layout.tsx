@@ -22,6 +22,10 @@ export default function AppLayout() {
       <Stack.Screen name="recruitment/application/[id]" options={{ title: '' }} />
       <Stack.Screen name="recruitment/opportunities" options={{ title: 'Opportunities' }} />
       <Stack.Screen name="recruitment/opportunity/[id]" options={{ title: '' }} />
+      <Stack.Screen name="schedule/index" options={{ title: 'Events & shifts' }} />
+      <Stack.Screen name="schedule/[id]" options={{ title: '' }} />
+      <Stack.Screen name="schedule/edit/[id]" options={{ title: '' }} />
+      <Stack.Screen name="my-shifts" options={{ title: 'My shifts' }} />
       <Stack.Screen name="settings/index" options={{ title: 'Organisation' }} />
       <Stack.Screen name="settings/profile" options={{ title: 'Profile & branding' }} />
       <Stack.Screen name="settings/locations" options={{ title: 'Locations' }} />

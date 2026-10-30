@@ -16,6 +16,7 @@ import { HttpError } from '../lib/http';
 import { sendInviteEmail } from '../lib/invites';
 import { cleanupOrphanUser, userForNewMembership } from '../lib/members';
 import { isUniqueViolation } from '../lib/prisma-errors';
+import { releaseFuturePlaces } from '../lib/schedule';
 import { identityEditable, toVolunteer, volunteerInclude } from '../lib/serialize';
 import { orgId, requireAuth, requireOrg, requirePermission } from '../middleware/auth';
 
@@ -298,6 +299,7 @@ volunteersRouter.patch('/:id', async (req, res) => {
 
 volunteersRouter.delete('/:id', async (req, res) => {
   const current = await findVolunteer(orgId(req), req.params.id as string);
+  await releaseFuturePlaces(current.id, req.auth!.user.id, req.auth!.membership!.organization);
   await prisma.membership.delete({ where: { id: current.id } });
   await cleanupOrphanUser(current.userId);
   res.json({ ok: true });

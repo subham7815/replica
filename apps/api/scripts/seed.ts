@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { ROLES, type Role } from '@newreplica/shared';
+import { ROLES, addDays, todayIn, zonedParts, zonedToUtc, type Role } from '@newreplica/shared';
 import { prisma } from '../src/db';
 import { hashPassword } from '../src/lib/password';
 
@@ -146,6 +146,71 @@ for (const a of [
     update: {},
     create: { opportunityId: driving.id, organizationId: org.id, userId: user.id, answers: a.answers },
   });
+}
+
+// Events and shifts: next Saturday's sorting session (one shift full with a waitlist) and a weekday delivery round.
+const today = todayIn(org.timezone);
+const DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+const daysUntil = (day: string) => {
+  const from = DAYS.indexOf(zonedParts(new Date(), org.timezone).weekday);
+  return ((DAYS.indexOf(day) - from + 7) % 7) || 7;
+};
+const saturday = addDays(today, daysUntil('sat'));
+const tuesday = addDays(today, daysUntil('tue'));
+const at = (date: string, time: string) => zonedToUtc(date, time, org.timezone);
+const memberId = async (email: string) =>
+  (await prisma.membership.findFirstOrThrow({ where: { organizationId: org.id, user: { email } } })).id;
+
+const SAMPLE_EVENTS = [
+  {
+    title: 'Saturday food sorting',
+    description: 'Weekly sorting session before the food bank opens. Wear comfortable shoes.',
+    location: 'Warehouse',
+    dept: 'Warehouse',
+    shifts: [
+      { title: 'Sorting', date: saturday, start: '09:00', end: '12:00', capacity: 4, people: ['priya@demo.test', 'tom@demo.test', 'volunteer@demo.test'] },
+      { title: 'Packing', date: saturday, start: '12:30', end: '15:00', capacity: 2, people: ['ana@demo.test', 'jordan@demo.test', 'priya@demo.test'] },
+    ],
+  },
+  {
+    title: 'Tuesday delivery round',
+    description: 'Deliver parcels to people who can’t get to the food bank. Mileage reimbursed.',
+    location: 'Main hall',
+    dept: 'Deliveries',
+    shifts: [{ title: 'Driver', date: tuesday, start: '17:30', end: '19:30', capacity: 3, people: ['jordan@demo.test'] }],
+  },
+];
+
+for (const e of SAMPLE_EVENTS) {
+  if (await prisma.event.findFirst({ where: { organizationId: org.id, title: e.title } })) continue;
+  const location = await prisma.location.findFirstOrThrow({ where: { organizationId: org.id, name: e.location } });
+  const event = await prisma.event.create({
+    data: {
+      organizationId: org.id,
+      title: e.title,
+      description: e.description,
+      locationId: location.id,
+      departmentId: depts.get(e.dept)!,
+      status: 'PUBLISHED',
+      publishedAt: new Date(),
+    },
+  });
+  for (const s of e.shifts) {
+    const shift = await prisma.shift.create({
+      data: { eventId: event.id, organizationId: org.id, title: s.title, startsAt: at(s.date, s.start), endsAt: at(s.date, s.end), capacity: s.capacity },
+    });
+    for (const [i, email] of s.people.entries()) {
+      await prisma.shiftAssignment.create({
+        data: {
+          shiftId: shift.id,
+          organizationId: org.id,
+          membershipId: await memberId(email),
+          status: i < s.capacity ? 'CONFIRMED' : 'WAITLISTED',
+          joinedAt: new Date(Date.now() + i * 1000),
+        },
+      });
+    }
+  }
 }
 
 console.log(`Seeded "${org.name}" with one user per role. Password for all: ${DEMO_PASSWORD}`);

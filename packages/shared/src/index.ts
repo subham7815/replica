@@ -6,3 +6,5 @@ export * from './schemas';
 export * from './api';
 export * from './availability';
 export * from './recruitment';
+export * from './schedule';
+export * from './time';

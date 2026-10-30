@@ -14,6 +14,20 @@ import {
   type ReviewInput,
 } from './recruitment';
 import {
+  coverCandidateSchema,
+  eventDetailSchema,
+  eventSummarySchema,
+  myShiftSchema,
+  openEventSchema,
+  signupResultSchema,
+  staffShiftSchema,
+  type AssignInput,
+  type CancelInput,
+  type EventInput,
+  type EventListQuery,
+  type ShiftInput,
+} from './schedule';
+import {
   authResponseSchema,
   departmentSchema,
   healthSchema,
@@ -159,6 +173,25 @@ export function createApiClient({ baseUrl, getToken, getOrganizationId, onUnauth
     getApplication: (id: string) => request(`/applications/${id}`, applicationSchema),
     approveApplication: (id: string, input: ReviewInput = {}) => post(`/applications/${id}/approve`, applicationSchema, input),
     rejectApplication: (id: string, input: ReviewInput = {}) => post(`/applications/${id}/reject`, applicationSchema, input),
+
+    listEvents: (query: EventListQuery = {}) => request(`/events${toQuery({ ...query })}`, z.array(eventSummarySchema)),
+    getEvent: (id: string) => request(`/events/${id}`, eventDetailSchema),
+    createEvent: (input: EventInput) => post('/events', eventDetailSchema, input),
+    updateEvent: (id: string, input: Partial<EventInput>) => patch(`/events/${id}`, eventDetailSchema, input),
+    cancelEvent: (id: string, input: CancelInput = {}) => post(`/events/${id}/cancel`, eventDetailSchema, input),
+    deleteEvent: (id: string) => del(`/events/${id}`, ok),
+
+    createShift: (eventId: string, input: ShiftInput) => post(`/events/${eventId}/shifts`, staffShiftSchema, input),
+    updateShift: (id: string, input: ShiftInput) => patch(`/shifts/${id}`, staffShiftSchema, input),
+    deleteShift: (id: string) => del(`/shifts/${id}`, ok),
+    assignToShift: (shiftId: string, input: AssignInput) => post(`/shifts/${shiftId}/assignments`, staffShiftSchema, input),
+    removeAssignment: (id: string, input: CancelInput = {}) => post(`/assignments/${id}/cancel`, staffShiftSchema, input),
+    coverCandidates: (shiftId: string) => request(`/shifts/${shiftId}/cover-candidates`, z.array(coverCandidateSchema)),
+
+    openShifts: () => request('/me/open-shifts', z.array(openEventSchema)),
+    myShifts: () => request('/me/shifts', z.array(myShiftSchema)),
+    signUpForShift: (shiftId: string) => post(`/me/shifts/${shiftId}/signup`, signupResultSchema),
+    cancelMyShift: (shiftId: string, input: CancelInput = {}) => post(`/me/shifts/${shiftId}/cancel`, ok, input),
   };
 }
 

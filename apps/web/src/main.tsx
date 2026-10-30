@@ -34,6 +34,10 @@ const RecruitmentLayout = lazy(() => import('./pages/recruitment/RecruitmentLayo
 const ApplicationsTab = lazy(() => import('./pages/recruitment/ApplicationsTab').then((m) => ({ default: m.ApplicationsTab })));
 const OpportunitiesTab = lazy(() => import('./pages/recruitment/OpportunitiesTab').then((m) => ({ default: m.OpportunitiesTab })));
 const OpportunityFormPage = lazy(() => import('./pages/recruitment/OpportunityFormPage').then((m) => ({ default: m.OpportunityFormPage })));
+const SchedulePage = lazy(() => import('./pages/schedule/SchedulePage').then((m) => ({ default: m.SchedulePage })));
+const EventFormPage = lazy(() => import('./pages/schedule/EventFormPage').then((m) => ({ default: m.EventFormPage })));
+const EventDetailPage = lazy(() => import('./pages/schedule/EventDetailPage').then((m) => ({ default: m.EventDetailPage })));
+const MyShiftsPage = lazy(() => import('./pages/MyShiftsPage').then((m) => ({ default: m.MyShiftsPage })));
 const DiscoverPage = lazy(() => import('./pages/public/DiscoverPage').then((m) => ({ default: m.DiscoverPage })));
 const OrganizationPage = lazy(() => import('./pages/public/OrganizationPage').then((m) => ({ default: m.OrganizationPage })));
 const OpportunityPage = lazy(() => import('./pages/public/OpportunityPage').then((m) => ({ default: m.OpportunityPage })));
@@ -85,6 +89,17 @@ createRoot(document.getElementById('root')!).render(
                   </Route>
                   <Route path="recruitment/opportunities/new" element={<OpportunityFormPage />} />
                   <Route path="recruitment/opportunities/:id" element={<OpportunityFormPage />} />
+                </Route>
+                <Route element={<RequirePermission permission="shifts:manage" />}>
+                  <Route path="schedule" element={<SchedulePage />} />
+                  <Route path="schedule/:id" element={<EventDetailPage />} />
+                </Route>
+                <Route element={<RequirePermission permission="programmes:manage" />}>
+                  <Route path="schedule/new" element={<EventFormPage />} />
+                  <Route path="schedule/:id/edit" element={<EventFormPage />} />
+                </Route>
+                <Route element={<RequirePermission permission="self:manage" />}>
+                  <Route path="my-shifts" element={<MyShiftsPage />} />
                 </Route>
                 <Route element={<RequirePermission permission="org:manage" />}>
                   <Route path="settings" element={<SettingsLayout />}>

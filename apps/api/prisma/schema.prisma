@@ -42,6 +42,9 @@ model Organization {
   departments   Department[]
   opportunities Opportunity[]
   applications  Application[]
+  events        Event[]
+  shifts        Shift[]
+  assignments   ShiftAssignment[]
 }
 
 enum OpportunityStatus {
@@ -148,6 +151,7 @@ model Membership {
   updatedAt      DateTime     @updatedAt
 
   departments Department[]
+  assignments ShiftAssignment[]
 
   @@unique([userId, organizationId])
   @@index([organizationId, role])
@@ -164,6 +168,7 @@ model Location {
   updatedAt      DateTime     @updatedAt
 
   opportunities Opportunity[]
+  events        Event[]
 
   @@unique([organizationId, name])
 }
@@ -179,6 +184,7 @@ model Department {
 
   memberships   Membership[]
   opportunities Opportunity[]
+  events        Event[]
 
   @@unique([organizationId, name])
 }
@@ -195,4 +201,90 @@ model LoginCode {
   createdAt DateTime  @default(now())
 
   @@index([userId])
+}
+
+enum EventStatus {
+  DRAFT
+  PUBLISHED
+  CANCELLED
+}
+
+enum AssignmentStatus {
+  CONFIRMED
+  WAITLISTED
+  CANCELLED
+}
+
+enum AssignmentSource {
+  SELF
+  STAFF
+}
+
+// A programme or one-off event. Its dates come from its shifts.
+model Event {
+  id             String       @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  title          String
+  description    String?
+  locationId     String?
+  location       Location?    @relation(fields: [locationId], references: [id], onDelete: SetNull)
+  departmentId   String?
+  department     Department?  @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+  status         EventStatus  @default(DRAFT)
+  publishedAt    DateTime?
+  cancelledAt    DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  shifts Shift[]
+
+  @@index([organizationId, status])
+}
+
+model Shift {
+  id              String       @id @default(cuid())
+  eventId         String
+  event           Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  organizationId  String
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  title           String
+  startsAt        DateTime
+  endsAt          DateTime
+  capacity        Int
+  waitlistEnabled Boolean      @default(true)
+  notes           String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  assignments ShiftAssignment[]
+
+  @@index([eventId])
+  @@index([organizationId, startsAt])
+}
+
+// One person on one shift. Cancelled rows are kept so coordinators can see who dropped out and when.
+model ShiftAssignment {
+  id             String           @id @default(cuid())
+  shiftId        String
+  shift          Shift            @relation(fields: [shiftId], references: [id], onDelete: Cascade)
+  organizationId String
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  membershipId   String
+  membership     Membership       @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  status         AssignmentStatus
+  source         AssignmentSource @default(SELF)
+  // Waitlist order. Reset when someone re-joins after cancelling.
+  joinedAt       DateTime         @default(now())
+  promotedAt     DateTime?
+  cancelledAt    DateTime?
+  cancelledById  String?
+  cancelReason   String?
+  lateCancel     Boolean          @default(false)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  @@unique([shiftId, membershipId])
+  @@index([shiftId, status, joinedAt])
+  @@index([membershipId, status])
 }

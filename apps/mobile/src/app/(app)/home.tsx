@@ -1,12 +1,21 @@
 import { ROLE_LABELS, colors, navItemsFor, radii, spacing } from '@newreplica/shared';
 import { useAuth } from '@newreplica/shared/auth';
-import { router } from 'expo-router';
+import { router, type Href } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { ChipGroup } from '@/components/kit';
 import { FadeUp } from '@/components/motion';
 import { Screen } from '@/components/Screen';
 import { Button, Card, text } from '@/components/ui';
+
+// Modules with their own screens; anything else opens the placeholder.
+const SCREENS: Record<string, Href> = {
+  volunteers: '/volunteers',
+  settings: '/settings',
+  recruitment: '/recruitment',
+  schedule: '/schedule',
+  'my-shifts': '/my-shifts',
+};
 
 export default function HomeScreen() {
   const { user, signOut, switchOrganization } = useAuth();
@@ -49,15 +58,7 @@ export default function HomeScreen() {
           <FadeUp key={item.key} delay={180 + i * 50}>
             <Pressable
               accessibilityRole="button"
-              onPress={() =>
-                item.key === 'volunteers'
-                  ? router.push('/volunteers')
-                  : item.key === 'settings'
-                    ? router.push('/settings')
-                    : item.key === 'recruitment'
-                      ? router.push('/recruitment')
-                      : router.push({ pathname: '/module/[key]', params: { key: item.key } })
-              }
+              onPress={() => router.push(SCREENS[item.key] ?? { pathname: '/module/[key]', params: { key: item.key } })}
               style={({ pressed }) => [pressed && { transform: [{ translateY: 1 }], opacity: 0.9 }]}
             >
               <Card style={{ padding: spacing.lg }}>

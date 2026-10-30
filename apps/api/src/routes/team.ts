@@ -4,6 +4,7 @@ import { prisma } from '../db';
 import { HttpError } from '../lib/http';
 import { sendInviteEmail } from '../lib/invites';
 import { assertNotLastAdmin, cleanupOrphanUser, userForNewMembership } from '../lib/members';
+import { releaseFuturePlaces } from '../lib/schedule';
 import { toTeamMember } from '../lib/serialize';
 import { orgId, requireAuth, requireOrg, requirePermission } from '../middleware/auth';
 
@@ -54,6 +55,7 @@ teamRouter.delete('/:id', async (req, res) => {
   const target = await findStaff(organizationId, req.params.id as string);
   if (target.userId === req.auth!.user.id) throw new HttpError(409, 'You can’t remove yourself');
   await assertNotLastAdmin(organizationId, target.id, 'remove');
+  await releaseFuturePlaces(target.id, req.auth!.user.id, req.auth!.membership!.organization);
   await prisma.membership.delete({ where: { id: target.id } });
   await cleanupOrphanUser(target.userId);
   res.json({ ok: true });

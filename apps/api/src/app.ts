@@ -8,6 +8,7 @@ import { authRouter } from './routes/auth';
 import { organizationRouter } from './routes/organization';
 import { publicRouter } from './routes/public';
 import { applicationsRouter, opportunitiesRouter } from './routes/recruitment';
+import { assignmentsRouter, eventsRouter, meRouter, shiftsRouter } from './routes/schedule';
 import { teamRouter } from './routes/team';
 import { volunteersRouter } from './routes/volunteers';
 
@@ -34,6 +35,10 @@ export function createApp() {
   app.use('/public', publicRouter);
   app.use('/opportunities', opportunitiesRouter);
   app.use('/applications', applicationsRouter);
+  app.use('/events', eventsRouter);
+  app.use('/shifts', shiftsRouter);
+  app.use('/assignments', assignmentsRouter);
+  app.use('/me', meRouter);
   app.use(organizationRouter);
 
   app.use((_req, res) => {
